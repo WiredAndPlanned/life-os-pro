@@ -18,6 +18,7 @@ import { resolve } from "node:path";
 const root = process.cwd();
 
 export default defineConfig({
+  base: "/life-os-pro/",
   plugins: [react()],
   resolve: {
     alias: {
