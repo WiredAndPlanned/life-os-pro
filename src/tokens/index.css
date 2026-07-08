@@ -1,0 +1,15 @@
+/* =========================================================================
+   TOKEN LAYER ENTRY (Phase 1)
+
+   The single import that wires the design-token layer. Order matters:
+     1. color.css  — themed values (light/dark)
+     2. scale.css  — spacing/radius/type/elevation/motion (collection scale)
+     3. base.css   — reset + base element styling + a11y floors (consumes 1+2)
+
+   Everything downstream (component library, modules) styles itself from these
+   CSS variables and NEVER hardcodes a raw value (§26: consume, don't fork).
+   ========================================================================= */
+
+@import "./color.css";
+@import "./scale.css";
+@import "./base.css";

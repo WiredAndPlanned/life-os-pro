@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <!--
+      Favicon: the Cairn mark (Identity Board) as inline SVG — three stones,
+      √2 widths (8·11.3·16), full-round ends, one ink. A mid-ink fill reads on
+      both light and dark browser chrome.
+    -->
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 15.5' fill='%236b6685'%3E%3Crect x='8' y='0' width='8' height='4.5' rx='2.25'/%3E%3Crect x='6.35' y='6' width='11.3' height='4.5' rx='2.25'/%3E%3Crect x='4.5' y='12' width='16' height='4.5' rx='2.25'/%3E%3C/svg%3E"
+    />
+    <meta
+      name="description"
+      content="Life OS Pro — your whole life in one calm place, so none of it has to live in your head."
+    />
+    <title>Life OS Pro</title>
+    <!--
+      Theme-before-first-paint (Constitution §18, Level 2 §7).
+      This tiny inline script runs before the app bundle so the correct
+      luminance is set on <html data-theme> with no flash. It reads the
+      persisted preference and resolves "system" against the OS setting.
+      This is the ONLY place persistence is read outside the @data layer,
+      and it is deliberate: it must run before any module or React code.
+    -->
+    <script>
+      (function () {
+        try {
+          // Read the appearance preference before first paint. Prefer the current
+          // key; fall back to the pre-rename key so returning users see no flash.
+          var stored =
+            localStorage.getItem("lifeospro.appearance") ||
+            localStorage.getItem("genz.appearance"); // "light" | "dark" | "system" | null
+          var pref = stored || "system";
+          var systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          var resolved = pref === "system" ? (systemDark ? "dark" : "light") : pref;
+          document.documentElement.setAttribute("data-theme", resolved);
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

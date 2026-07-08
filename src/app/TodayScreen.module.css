@@ -1,0 +1,32 @@
+.greetHeader {
+  margin-bottom: var(--space-2);
+}
+
+.greeting {
+  font-size: var(--text-display);
+  font-weight: var(--weight-bold);
+  color: var(--ink);
+  line-height: var(--leading-tight);
+}
+
+.subtitle {
+  font-size: var(--text-callout);
+  color: var(--ink-3);
+  margin-top: var(--space-1);
+}
+
+.quick {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-end;
+}
+
+.quick > :first-child {
+  flex: 1;
+}
+
+.spendValue {
+  font-variant-numeric: var(--numeric-figures);
+  color: var(--ink);
+  font-size: var(--text-callout);
+}

@@ -1,0 +1,23 @@
+/* Hub entries flow into a responsive grid so a family's modules fill the desktop
+   canvas (like the collection's other apps), instead of a single narrow column.
+   On phones it's one column; it grows to 2–3 as width allows. The Row component
+   is unchanged — this only arranges the rows. */
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-1);
+}
+
+@media (min-width: 700px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-2) var(--space-5);
+  }
+}
+
+@media (min-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

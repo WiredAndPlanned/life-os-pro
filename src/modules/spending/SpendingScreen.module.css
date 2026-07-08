@@ -1,0 +1,88 @@
+.screen {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rhythm);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: var(--text-title);
+  font-weight: var(--weight-bold);
+  color: var(--ink);
+}
+
+.subtitle {
+  font-size: var(--text-footnote);
+  color: var(--ink-3);
+  margin-top: 2px;
+}
+
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.summaryLabel {
+  font-size: var(--text-footnote);
+  color: var(--ink-3);
+}
+
+/* Money in neutral ink, never a scoreboard (§6.3). */
+.summaryValue {
+  font-size: var(--text-display);
+  font-weight: var(--weight-bold);
+  color: var(--ink);
+  font-variant-numeric: var(--numeric-figures);
+}
+
+.rowTrailing {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-variant-numeric: var(--numeric-figures);
+}
+
+.deleteBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--touch-min);
+  height: var(--touch-min);
+  margin-right: calc(-1 * var(--space-2));
+  border: none;
+  background: transparent;
+  color: var(--ink-3);
+  border-radius: var(--radius-2);
+  cursor: pointer;
+  transition:
+    color var(--duration-instant) var(--ease-standard),
+    background-color var(--duration-instant) var(--ease-standard);
+}
+
+.deleteBtn:hover {
+  color: var(--critical);
+  background: var(--surface-2);
+}
+
+.addRow {
+  display: flex;
+  justify-content: center;
+  padding-top: var(--space-2);
+}
+
+.toastWrap {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--space-8) + var(--space-5));
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 120;
+}

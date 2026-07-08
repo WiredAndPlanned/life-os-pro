@@ -1,0 +1,125 @@
+/* One nav, three presentations (§11, Level 2 §9). Presentation switches by
+   size class; logic and markup are identical. */
+
+.nav {
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+}
+
+/* Brand lockup heads the rail/sidebar. Hidden on the phone bottom bar where the
+   nav is a horizontal strip with no room for a wordmark (Identity Board: clear
+   space is non-negotiable, so we show it only where it can breathe). */
+.brand {
+  display: none;
+}
+
+.list {
+  list-style: none;
+  display: flex;
+  padding: var(--space-1) var(--space-2);
+  margin: 0;
+}
+
+.item {
+  flex: 1;
+  display: flex;
+}
+
+.link {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: var(--touch-min);
+  padding: var(--space-2);
+  border-radius: var(--radius-2);
+  text-decoration: none;
+  color: var(--ink-3);
+  transition:
+    color var(--duration-quick) var(--ease-standard),
+    background-color var(--duration-quick) var(--ease-standard);
+}
+
+.link:hover {
+  color: var(--ink-2);
+  background: var(--surface-2);
+}
+
+/* Active destination is marked with the single accent (§6.1, §11). */
+.active,
+.active:hover {
+  color: var(--signal);
+}
+
+.icon {
+  display: flex;
+}
+
+.label {
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+}
+
+.active .label {
+  font-weight: var(--weight-semibold);
+}
+
+/* --- MEDIUM: left rail (>=700px) --- */
+@media (min-width: 700px) {
+  .nav {
+    border-top: none;
+    border-right: 1px solid var(--line);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  /* On the rail there's room for the mark but not the wordmark: show the Cairn,
+     clip the word. */
+  .brand {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-5) var(--space-2) var(--space-3);
+  }
+  .brand :global(.wordmark) {
+    display: none;
+  }
+  .list {
+    flex-direction: column;
+    padding: var(--space-4) var(--space-2);
+    gap: var(--space-1);
+  }
+  .item {
+    flex: none;
+  }
+  .link {
+    flex-direction: column;
+    width: 72px;
+  }
+}
+
+/* --- LARGE: left sidebar (>=1100px) --- */
+@media (min-width: 1100px) {
+  /* Full lockup — mark + wordmark — left-aligned above the destinations. */
+  .brand {
+    justify-content: flex-start;
+    padding: var(--space-6) var(--space-5) var(--space-4);
+  }
+  .brand :global(.wordmark) {
+    display: inline;
+  }
+  .list {
+    padding: var(--space-4) var(--space-3) var(--space-5);
+  }
+  .link {
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 200px;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+  }
+  .label {
+    font-size: var(--text-callout);
+  }
+}

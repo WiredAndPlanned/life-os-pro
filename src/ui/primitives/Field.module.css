@@ -1,0 +1,60 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.label {
+  font-size: var(--text-footnote);
+  font-weight: var(--weight-medium);
+  color: var(--ink-2);
+}
+
+.input {
+  min-height: var(--touch-min);
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-2);
+  color: var(--ink);
+  font-size: var(--text-body);
+  transition:
+    border-color var(--duration-quick) var(--ease-standard),
+    background-color var(--duration-quick) var(--ease-standard);
+}
+
+.input::placeholder {
+  color: var(--ink-4);
+}
+
+.input:hover {
+  background: var(--surface-2);
+  border-color: var(--line-2);
+}
+
+/* focus-visible ring is global (base.css); we also lift the field surface. */
+.input:focus {
+  background: var(--surface);
+  border-color: var(--signal);
+}
+
+.input:disabled {
+  color: var(--ink-4);
+  cursor: not-allowed;
+}
+
+/* Error state: a calm critical edge, but the WORDS carry the meaning (§24). */
+.inputError,
+.inputError:focus {
+  border-color: var(--critical);
+}
+
+.error {
+  font-size: var(--text-footnote);
+  color: var(--critical);
+}
+
+.hint {
+  font-size: var(--text-footnote);
+  color: var(--ink-3);
+}

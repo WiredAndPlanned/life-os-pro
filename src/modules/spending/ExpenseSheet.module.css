@@ -1,0 +1,48 @@
+.categories {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.legend {
+  font-size: var(--text-footnote);
+  font-weight: var(--weight-medium);
+  color: var(--ink-2);
+  margin-bottom: var(--space-2);
+  padding: 0;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.chip {
+  min-height: 40px;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius-round);
+  background: transparent;
+  color: var(--ink-2);
+  font-size: var(--text-footnote);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  transition:
+    background-color var(--duration-instant) var(--ease-standard),
+    border-color var(--duration-instant) var(--ease-standard),
+    color var(--duration-instant) var(--ease-standard);
+}
+
+.chip:hover {
+  background: var(--surface-2);
+}
+
+/* Selected chip uses the single accent's on-tint surface — the one accepted
+   accent surface, used sparingly (§6.1). Meaning also carried by aria-pressed. */
+.chipActive,
+.chipActive:hover {
+  background: var(--signal-on-tint);
+  border-color: var(--signal);
+  color: var(--signal);
+}

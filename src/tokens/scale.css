@@ -1,0 +1,91 @@
+/* =========================================================================
+   STRUCTURE TOKENS — spacing, radius, type scale, elevation, motion
+
+   These materialize the COLLECTION scale (Level 2 §5). Level 2 owns these as a
+   shared system ("one certified token system — the single source for color,
+   type, spacing, radius, elevation, and motion; products consume, never
+   redefine"). This repo has no separate Level 2 token package yet, so the
+   collection scale is materialized here as the single place it lives. It is
+   NOT a product redefinition: these are the collection values, and if a Level 2
+   token package is later extracted, these move up unchanged. The product must
+   consume these and never fork them (§26).
+
+   Between light and dark, these are IDENTICAL — only luminance (color.css)
+   changes (§18). Elevation is the one exception: the shadow softens in dark,
+   never disappears (§6.2).
+   ========================================================================= */
+
+:root {
+  /* --- Spacing & rhythm: one scale, consistent vertical rhythm (Level 2 §5) --- */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  /* Uniform vertical rhythm between stacked sections/cards across every screen. */
+  --rhythm: var(--space-4);
+
+  /* --- Radius: one set of corner radii (Level 2 §5). Rounded, unhurried (§5). --- */
+  --radius-1: 8px; /* small controls, chips */
+  --radius-2: 12px; /* fields, rows */
+  --radius-3: 16px; /* cards — the collection's larger radius (§10) */
+  --radius-4: 24px; /* bottom sheet top corners (§10, §17) */
+  --radius-round: 999px; /* pills, dots, circular controls */
+
+  /* --- Type scale: one disciplined scale with defined roles (Level 2 §5) ---
+     Roles: display, title, heading, body, callout, footnote, caption.
+     Hierarchy comes from the scale + weight, never arbitrary sizes (§7). */
+  --font-family:
+    -apple-system, "SF Pro Text", "SF Pro Display", "Segoe UI", system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", monospace;
+
+  --text-display: 2rem; /* 32px — the largest, used sparingly */
+  --text-title: 1.5rem; /* 24px — screen titles */
+  --text-heading: 1.125rem; /* 18px — section headings */
+  --text-body: 1rem; /* 16px — body, inputs */
+  --text-callout: 0.9375rem; /* 15px — secondary body */
+  --text-footnote: 0.8125rem; /* 13px — meta */
+  --text-caption: 0.75rem; /* 12px — smallest labels */
+
+  --leading-tight: 1.2;
+  --leading-normal: 1.45;
+
+  /* Weight carries hierarchy, not size alone (§7). No ultra-bold everywhere. */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* Numbers align in columns (money, stats, logs) — tabular by default (§7). */
+  --numeric-figures: tabular-nums;
+
+  /* --- Elevation: one restrained soft shadow; relationship, not decoration --- */
+  --elevation-1: 0 1px 2px rgba(28, 22, 52, 0.06), 0 1px 3px rgba(28, 22, 52, 0.04);
+  --elevation-2: 0 2px 8px rgba(28, 22, 52, 0.08), 0 1px 3px rgba(28, 22, 52, 0.05);
+  --elevation-sheet: 0 -8px 32px rgba(28, 22, 52, 0.16);
+
+  /* --- Motion: one set of durations & easings (Level 2 §12). Arrival & settle. ---
+     Nothing loops. Reduced-motion (base.css) collapses all of these. */
+  --duration-instant: 80ms; /* press acknowledgment */
+  --duration-quick: 160ms; /* small transitions */
+  --duration-settle: 240ms; /* arrival & settle */
+  --duration-sheet: 300ms; /* sheet rise */
+  --ease-settle: cubic-bezier(0.22, 0.61, 0.36, 1); /* ease-out, calm landing */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* --- Layout --- */
+  --reading-max: 540px; /* comfortable reading measure; larger screens add space (§7) */
+  --focus-ring-width: 2px; /* focus-visible ring, drawn in --signal (§10, §24) */
+  --touch-min: 44px; /* touch-target floor on every interactive element (§24) */
+}
+
+/* Elevation softens in dark, never disappears (§6.2). */
+:root[data-theme="dark"] {
+  --elevation-1: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
+  --elevation-2: 0 2px 10px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.35);
+  --elevation-sheet: 0 -8px 32px rgba(0, 0, 0, 0.6);
+}

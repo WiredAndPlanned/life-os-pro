@@ -1,0 +1,39 @@
+.cardButton {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.cardHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.name {
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+  color: var(--ink);
+}
+
+.amounts {
+  font-size: var(--text-callout);
+  color: var(--ink);
+  font-variant-numeric: var(--numeric-figures);
+}
+
+.of {
+  color: var(--ink-3);
+}
+
+.cardActions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--space-3);
+}

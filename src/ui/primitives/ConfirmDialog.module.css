@@ -1,0 +1,82 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 12, 27, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-5);
+  z-index: 110;
+  animation: fade var(--duration-quick) var(--ease-standard);
+}
+
+/* Full-cover, invisible click target for click-outside-to-dismiss. It's a real
+   <button> (accessible + lint-clean) sitting behind the dialog. */
+.scrim {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  cursor: default;
+}
+
+.dialog {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  background: var(--surface);
+  border-radius: var(--radius-3);
+  box-shadow: var(--elevation-2);
+  padding: var(--space-5);
+  animation: pop var(--duration-settle) var(--ease-settle);
+}
+
+.title {
+  font-size: var(--text-heading);
+  font-weight: var(--weight-bold);
+  color: var(--ink);
+  margin-bottom: var(--space-2);
+}
+
+.body {
+  font-size: var(--text-callout);
+  color: var(--ink-2);
+  line-height: var(--leading-normal);
+  margin-bottom: var(--space-5);
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-3);
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop,
+  .dialog {
+    animation: none;
+  }
+}

@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Life OS Pro — Component Gallery (Phase 2 verification)</title>
+    <style>
+      /* Real token values, inlined for standalone rendering. In the app these
+         come from src/tokens/*.css; kept in sync here for the gate. */
+      .t {
+        --signal:#6c5ce0;--signal-hover:#5b4bd0;--signal-pressed:#4e3fc0;
+        --signal-ink:#fff;--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;
+        --space-5:24px;--space-6:32px;--space-7:48px;--space-8:64px;
+        --radius-1:8px;--radius-2:12px;--radius-3:16px;--radius-4:24px;--radius-round:999px;
+        --text-display:2rem;--text-title:1.5rem;--text-heading:1.125rem;--text-body:1rem;
+        --text-callout:.9375rem;--text-footnote:.8125rem;--text-caption:.75rem;
+        --weight-regular:400;--weight-medium:500;--weight-semibold:600;--weight-bold:700;
+        --leading-normal:1.45;--touch-min:44px;--reading-max:540px;
+        --font-family:-apple-system,"Segoe UI",system-ui,sans-serif;
+        --ease-standard:cubic-bezier(.4,0,.2,1);--duration-instant:80ms;
+      }
+      .light {
+        --signal-on-tint:#eeebfc;--bg:#f6f5fb;--surface:#fff;--surface-2:#efedf7;
+        --line:rgba(28,22,52,.08);--line-2:rgba(28,22,52,.14);
+        --ink:#1b1633;--ink-2:#4a4568;--ink-3:#6b6685;--ink-4:#c3bfd6;
+        --positive:#2e9e6b;--caution:#c9821e;--critical:#c64545;
+        --cat-plan:#7c74c4;--cat-health:#5ba6a0;--cat-money:#5e8fbf;--cat-life:#c48f6a;
+        --elevation-1:0 1px 2px rgba(28,22,52,.06),0 1px 3px rgba(28,22,52,.04);
+        --elevation-2:0 2px 8px rgba(28,22,52,.08),0 1px 3px rgba(28,22,52,.05);
+      }
+      .dark {
+        --signal-on-tint:#241f3d;--bg:#0f0c1b;--surface:#1a1630;--surface-2:#221d3b;
+        --line:rgba(255,255,255,.08);--line-2:rgba(255,255,255,.14);
+        --ink:#f3f1fb;--ink-2:#c6c1e0;--ink-3:#8b85a8;--ink-4:#565073;
+        --positive:#4fc08a;--caution:#e0a04a;--critical:#e06a6a;
+        --cat-plan:#9a92e0;--cat-health:#79c2bc;--cat-money:#7fabd6;--cat-life:#d9a984;
+        --elevation-1:0 1px 2px rgba(0,0,0,.4),0 1px 3px rgba(0,0,0,.3);
+        --elevation-2:0 2px 10px rgba(0,0,0,.5),0 1px 3px rgba(0,0,0,.35);
+      }
+      *{box-sizing:border-box;margin:0}
+      body{font-family:var(--font-family)}
+      .pane{background:var(--bg);color:var(--ink);padding:28px;min-height:100vh}
+      .cols{display:flex}
+      .cols>div{flex:1}
+      h1{font-size:22px;margin-bottom:2px}
+      .sub{color:var(--ink-3);font-size:13px;margin-bottom:20px}
+      h3{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3);
+         margin:26px 0 10px;font-weight:700}
+      .demo{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
+
+      /* Button */
+      .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
+        min-height:44px;padding:0 24px;border:1px solid transparent;border-radius:12px;
+        font-size:15px;font-weight:600;line-height:1;cursor:pointer;font-family:inherit}
+      .btn.primary{background:var(--signal);color:var(--signal-ink)}
+      .btn.primary.hover{background:var(--signal-hover)}
+      .btn.primary.press{background:var(--signal-pressed);transform:scale(.98)}
+      .btn.ghost{background:transparent;color:var(--ink-2);border-color:var(--line-2)}
+      .btn.danger{background:transparent;color:var(--critical);border-color:var(--critical)}
+      .btn.focus{outline:2px solid var(--signal);outline-offset:2px}
+      .btn:disabled,.btn.disabled{color:var(--ink-4);background:var(--surface-2);
+        border-color:transparent;cursor:not-allowed}
+
+      /* Card */
+      .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;
+        padding:24px;box-shadow:var(--elevation-1);max-width:420px}
+      .card h2{font-size:18px;font-weight:600;margin-bottom:16px}
+
+      /* Row */
+      .rows{background:var(--surface);border:1px solid var(--line);border-radius:16px;
+        padding:4px 16px;max-width:420px}
+      .row{display:flex;align-items:center;justify-content:space-between;gap:12px;
+        min-height:44px;padding:12px 0;border-bottom:1px solid var(--line)}
+      .row:last-child{border-bottom:none}
+      .row.hover{background:var(--surface-2);border-radius:12px;padding-left:8px;padding-right:8px}
+      .lead{display:flex;align-items:center;gap:12px}
+      .dot{width:10px;height:10px;border-radius:999px;flex:none}
+      .rtitle{font-size:16px;font-weight:500;color:var(--ink)}
+      .rmeta{font-size:13px;color:var(--ink-3)}
+      .rtrail{color:var(--ink-2);font-size:15px;font-variant-numeric:tabular-nums}
+
+      /* Field */
+      .field{display:flex;flex-direction:column;gap:8px;max-width:420px}
+      .flabel{font-size:13px;font-weight:500;color:var(--ink-2)}
+      .input{min-height:44px;padding:12px 16px;background:var(--surface-2);
+        border:1px solid transparent;border-radius:12px;color:var(--ink);font-size:16px;
+        font-family:inherit}
+      .input.focus{background:var(--surface);border-color:var(--signal);outline:none}
+      .input.err{border-color:var(--critical)}
+      .input::placeholder{color:var(--ink-4)}
+      .ferr{font-size:13px;color:var(--critical)}
+      .fhint{font-size:13px;color:var(--ink-3)}
+
+      /* Empty state */
+      .empty{display:flex;flex-direction:column;align-items:center;text-align:center;
+        gap:12px;padding:40px 24px;max-width:360px;background:var(--surface);
+        border:1px solid var(--line);border-radius:16px}
+      .empty h3{font-size:18px;font-weight:600;color:var(--ink);margin:0;text-transform:none;letter-spacing:0}
+      .empty p{font-size:15px;color:var(--ink-3)}
+
+      /* Skeleton */
+      .sk{background:linear-gradient(90deg,var(--surface-2) 25%,var(--line) 37%,var(--surface-2) 63%);
+        background-size:400% 100%;border-radius:8px;height:14px;margin-bottom:12px}
+      .sk.blk{height:64px;border-radius:16px}
+
+      /* Toast */
+      .toast{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;
+        background:var(--ink);color:var(--bg);border-radius:999px;box-shadow:var(--elevation-2);
+        font-size:15px;font-weight:500}
+
+      /* Confirm dialog (static representation) */
+      .dlg{width:320px;background:var(--surface);border-radius:16px;box-shadow:var(--elevation-2);
+        padding:24px}
+      .dlg h2{font-size:18px;font-weight:700;margin-bottom:8px}
+      .dlg p{font-size:15px;color:var(--ink-2);margin-bottom:24px}
+      .dlg .acts{display:flex;gap:12px}
+      .dlg .acts .btn{flex:1}
+
+      /* Bottom sheet (static representation) */
+      .sheet{width:100%;max-width:420px;background:var(--surface);
+        border-radius:24px 24px 0 0;box-shadow:var(--elevation-2);padding:12px 24px 32px}
+      .grip{width:36px;height:4px;border-radius:999px;background:var(--line-2);margin:0 auto 16px}
+      .sheet h2{font-size:18px;font-weight:700;margin-bottom:16px}
+      .sheetbody{display:flex;flex-direction:column;gap:16px}
+      .sheetftr{display:flex;gap:12px;margin-top:32px}
+      .sheetftr .btn{flex:1}
+
+      /* Nav (bottom-bar presentation) */
+      .nav{background:var(--surface);border:1px solid var(--line);border-radius:16px;
+        display:flex;padding:4px 8px;max-width:420px}
+      .nav a{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;
+        min-height:44px;padding:8px;border-radius:12px;text-decoration:none;color:var(--ink-3);
+        font-size:12px;font-weight:500}
+      .nav a.on{color:var(--signal);font-weight:600}
+      .ic{width:24px;height:24px}
+      svg{display:block}
+    </style>
+  </head>
+  <body>
+    <div class="cols">
+      <div class="t light" id="L"><div class="pane"><h1>Component Gallery — Light</h1><div class="sub">Every component, every state (§10)</div><div id="cl"></div></div></div>
+      <div class="t dark" id="D"><div class="pane"><h1>Component Gallery — Dark</h1><div class="sub">Same components, one luminance (§18)</div><div id="cd"></div></div></div>
+    </div>
+    <script>
+      function ico(paths){return `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${paths}"/></svg>`;}
+      const I = {
+        today:"M4 9h16M8 4v3M16 4v3M5 6h14a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Z",
+        plan:"M6 4h9l5 5v11H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1ZM14 4v6h6M8.5 14h7M8.5 17h4",
+        life:"M12 21s-7-4.35-7-9a4 4 0 0 1 7-2.65A4 4 0 0 1 19 12c0 4.65-7 9-7 9Z",
+        search:"M11 11m-7 0a7 7 0 1 0 14 0a7 7 0 1 0-14 0M20 20l-4-4",
+        settings:"M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM19 12a7 7 0 0 0-.1-1.2l2-1.6-2-3.4-2.4 1a7 7 0 0 0-2-1.2L14 2h-4l-.5 2.6a7 7 0 0 0-2 1.2l-2.4-1-2 3.4 2 1.6A7 7 0 0 0 5 12a7 7 0 0 0 .1 1.2l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 2 1.2L10 22h4l.5-2.6a7 7 0 0 0 2-1.2l2.4 1 2-3.4-2-1.6A7 7 0 0 0 19 12Z",
+        check:"M5 13l4 4L19 7",
+      };
+      function render(){
+        return `
+        <h3>Button — variants & states (§10, §17)</h3>
+        <div class="demo">
+          <button class="btn primary">Save</button>
+          <button class="btn primary hover">Save</button>
+          <button class="btn primary press">Save</button>
+          <button class="btn primary focus">Save</button>
+          <button class="btn primary disabled">Save</button>
+        </div>
+        <div class="demo">
+          <button class="btn ghost">Cancel</button>
+          <button class="btn danger">Delete debt</button>
+        </div>
+
+        <h3>Card — the primary surface (§10)</h3>
+        <div class="card"><h2>This week</h2>
+          <div style="color:var(--ink-2);font-size:15px">A short stack of calm cards, never a dense dashboard.</div>
+        </div>
+
+        <h3>Row — list item, quiet category dot (§10, §6.5)</h3>
+        <div class="rows">
+          <div class="row"><span class="lead"><span class="dot" style="background:var(--cat-money)"></span><span><div class="rtitle">Spotify</div><div class="rmeta">Renews in 3 days</div></span></span><span class="rtrail">$11.99</span></div>
+          <div class="row hover"><span class="lead"><span class="dot" style="background:var(--cat-health)"></span><span><div class="rtitle">Morning walk</div><div class="rmeta">Habit</div></span></span><span class="rtrail">${ico(I.check)}</span></div>
+          <div class="row"><span class="lead"><span class="dot" style="background:var(--cat-plan)"></span><span><div class="rtitle">Essay draft</div><div class="rmeta">Due tomorrow</div></span></span></div>
+        </div>
+
+        <h3>Field — rest, focus, error (§17, §19, §24)</h3>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div class="field"><label class="flabel">Amount</label><input class="input" placeholder="0.00"/></div>
+          <div class="field"><label class="flabel">Amount</label><input class="input focus" value="24.00"/><span class="fhint">What you spent.</span></div>
+          <div class="field"><label class="flabel">Amount</label><input class="input err" value="-"/><span class="ferr">Enter an amount greater than zero.</span></div>
+        </div>
+
+        <h3>Empty state — teaches & invites (§9, §19)</h3>
+        <div class="empty">
+          <svg width="96" height="96" viewBox="0 0 96 96" fill="none" stroke="var(--ink-4)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="20" y="26" width="56" height="44" rx="10"/><path d="M32 44h20M32 54h14"/><circle cx="64" cy="52" r="5" stroke="var(--signal)"/>
+          </svg>
+          <h3>Nothing here yet</h3>
+          <p>Dump a thought and clear your head.</p>
+          <button class="btn primary" style="margin-top:8px">Add a thought</button>
+        </div>
+
+        <h3>Loading — region skeleton, non-blocking (§19)</h3>
+        <div style="max-width:420px">
+          <div class="sk" style="width:100%"></div><div class="sk" style="width:100%"></div><div class="sk" style="width:60%"></div>
+          <div class="sk blk" style="margin-top:16px"></div>
+        </div>
+
+        <h3>Success — quiet, once (§19)</h3>
+        <div class="demo"><span class="toast">${ico(I.check)}<span>Saved</span></span></div>
+
+        <h3>Confirm dialog — irreversible action only (§17)</h3>
+        <div class="dlg">
+          <h2>Delete this debt?</h2>
+          <p>This can't be undone.</p>
+          <div class="acts"><button class="btn ghost">Cancel</button><button class="btn danger">Delete debt</button></div>
+        </div>
+
+        <h3>Bottom sheet — the primary input surface (§17)</h3>
+        <div class="sheet">
+          <div class="grip"></div>
+          <h2>Add expense</h2>
+          <div class="sheetbody">
+            <div class="field"><label class="flabel">Item</label><input class="input" placeholder="Coffee"/></div>
+            <div class="field"><label class="flabel">Amount</label><input class="input" placeholder="0.00"/></div>
+          </div>
+          <div class="sheetftr"><button class="btn ghost">Cancel</button><button class="btn primary">Save</button></div>
+        </div>
+
+        <h3>Primary nav — bottom-bar presentation, active in accent (§11)</h3>
+        <div class="nav">
+          <a class="on">${ico(I.today)}<span>Today</span></a>
+          <a>${ico(I.plan)}<span>Plan</span></a>
+          <a>${ico(I.life)}<span>Life</span></a>
+          <a>${ico(I.search)}<span>Search</span></a>
+          <a>${ico(I.settings)}<span>Settings</span></a>
+        </div>
+        `;
+      }
+      document.getElementById('cl').innerHTML = render();
+      document.getElementById('cd').innerHTML = render();
+    </script>
+  </body>
+</html>

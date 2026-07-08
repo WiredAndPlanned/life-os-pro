@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Spending — reference module (Phase 4 verification)</title>
+    <style>
+      .t{--signal:#6c5ce0;--signal-hover:#5b4bd0;--signal-ink:#fff;--signal-on-tint:#eeebfc;
+        --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:24px;--space-6:32px;--space-8:64px;
+        --radius-2:12px;--radius-3:16px;--radius-round:999px;--touch-min:44px;--reading-max:540px;
+        --text-title:1.5rem;--text-display:2rem;--text-heading:1.125rem;--text-body:1rem;--text-footnote:.8125rem;
+        --weight-medium:500;--weight-semibold:600;--weight-bold:700;
+        --font-family:-apple-system,"Segoe UI",system-ui,sans-serif;--elevation-1:0 1px 2px rgba(28,22,52,.06),0 1px 3px rgba(28,22,52,.04)}
+      .light{--bg:#f6f5fb;--surface:#fff;--surface-2:#efedf7;--line:rgba(28,22,52,.08);--line-2:rgba(28,22,52,.14);
+        --ink:#1b1633;--ink-2:#4a4568;--ink-3:#6b6685;--ink-4:#c3bfd6;--critical:#c64545;
+        --cat-plan:#7c74c4;--cat-health:#5ba6a0;--cat-money:#5e8fbf;--cat-life:#c48f6a}
+      .dark{--bg:#0f0c1b;--surface:#1a1630;--surface-2:#221d3b;--line:rgba(255,255,255,.08);--line-2:rgba(255,255,255,.14);
+        --ink:#f3f1fb;--ink-2:#c6c1e0;--ink-3:#8b85a8;--ink-4:#565073;--critical:#e06a6a;
+        --cat-plan:#9a92e0;--cat-health:#79c2bc;--cat-money:#7fabd6;--cat-life:#d9a984;
+        --elevation-1:0 1px 2px rgba(0,0,0,.4),0 1px 3px rgba(0,0,0,.3)}
+      *{box-sizing:border-box;margin:0}body{font-family:var(--font-family)}
+      .device{background:var(--bg);color:var(--ink);width:420px;padding:24px 16px;min-height:760px}
+      .lbl{text-align:center;font:600 12px var(--font-family);color:#8a85a3;text-transform:uppercase;letter-spacing:.08em;padding:12px}
+      .cols{display:flex;flex-wrap:wrap}
+      h1{font-size:var(--text-title);font-weight:700}
+      .sub{font-size:var(--text-footnote);color:var(--ink-3);margin-top:2px;margin-bottom:16px}
+      .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:var(--elevation-1);margin-bottom:16px}
+      .card h2{font-size:var(--text-heading);font-weight:600;margin-bottom:16px}
+      .sumL{font-size:var(--text-footnote);color:var(--ink-3)}
+      .sumV{font-size:var(--text-display);font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums;display:block;margin-top:4px}
+      .row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;padding:12px 0;border-bottom:1px solid var(--line)}
+      .row:last-child{border-bottom:none}
+      .lead{display:flex;align-items:center;gap:12px}
+      .dot{width:10px;height:10px;border-radius:999px;flex:none}
+      .rt{font-size:var(--text-body);font-weight:500;color:var(--ink)}
+      .rm{font-size:var(--text-footnote);color:var(--ink-3)}
+      .trail{display:inline-flex;align-items:center;gap:8px;font-variant-numeric:tabular-nums;color:var(--ink)}
+      .del{width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;border:none;background:transparent;color:var(--ink-3);border-radius:12px}
+      .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 24px;border:none;border-radius:12px;background:var(--signal);color:var(--signal-ink);font-size:15px;font-weight:600}
+      .addrow{display:flex;justify-content:center;padding-top:8px}
+      .empty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;padding:40px 24px;max-width:360px;margin:0 auto}
+      .empty h3{font-size:var(--text-heading);font-weight:600;color:var(--ink)}
+      .empty p{font-size:15px;color:var(--ink-3)}
+      svg{display:block}
+    </style>
+  </head>
+  <body>
+    <div class="cols" id="root"></div>
+    <script>
+      function money(n){return new Intl.NumberFormat(undefined,{style:'currency',currency:'USD',minimumFractionDigits:2}).format(n);}
+      const trash='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M6 7l1 13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-13M10 11v6M14 11v6"/></svg>';
+      const add='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>';
+      const items=[
+        {item:'Coffee',cat:'Food',fam:'life',amt:4.5},
+        {item:'Bus pass',cat:'Transport',fam:'money',amt:2.75},
+        {item:'Cinema',cat:'Fun',fam:'plan',amt:14.0},
+        {item:'Phone bill',cat:'Bills',fam:'money',amt:29.99},
+      ];
+      const total=items.reduce((s,i)=>s+i.amt,0);
+      function populated(){
+        return `<h1>Spending</h1><div class="sub">See where the money goes, calmly.</div>
+        <div class="card"><span class="sumL">Spent this month</span><span class="sumV">${money(total)}</span></div>
+        <div class="card"><h2>Recent</h2>
+        ${items.slice().reverse().map(e=>`<div class="row"><span class="lead"><span class="dot" style="background:var(--cat-${e.fam})"></span><span><div class="rt">${e.item}</div><div class="rm">${e.cat}</div></span></span><span class="trail">${money(e.amt)}<button class="del">${trash}</button></span></div>`).join('')}
+        </div>
+        <div class="addrow"><button class="btn">${add} Add expense</button></div>`;
+      }
+      function empty(){
+        return `<h1>Spending</h1><div class="sub">See where the money goes, calmly.</div>
+        <div class="card"><span class="sumL">Spent this month</span><span class="sumV">${money(0)}</span></div>
+        <div class="empty">
+          <svg width="96" height="96" viewBox="0 0 96 96" fill="none" stroke="var(--ink-4)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="22" y="34" width="52" height="34" rx="9"/><path d="M22 44h52"/><circle cx="60" cy="56" r="5" stroke="var(--signal)"/></svg>
+          <h3>No spending yet</h3><p>Add something you bought and it'll show up here, calmly.</p>
+          <button class="btn" style="margin-top:8px">${add} Add expense</button>
+        </div>`;
+      }
+      const root=document.getElementById('root');
+      const cases=[['light','populated',populated()],['dark','populated',populated()],['light','empty',empty()],['dark','empty',empty()]];
+      root.innerHTML=cases.map(([theme,name,html])=>`<div><div class="lbl">${theme} · ${name}</div><div class="t ${theme}"><div class="device">${html}</div></div></div>`).join('');
+    </script>
+  </body>
+</html>

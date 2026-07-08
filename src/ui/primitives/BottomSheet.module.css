@@ -1,0 +1,105 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 12, 27, 0.4);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 100;
+  animation: fade var(--duration-quick) var(--ease-standard);
+}
+
+/* Full-cover, invisible click target for click-outside-to-dismiss — a real
+   <button> behind the panel (accessible + lint-clean). */
+.scrim {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  cursor: default;
+}
+
+.panel {
+  position: relative;
+  width: 100%;
+  max-width: var(--reading-max);
+  background: var(--surface);
+  border-radius: var(--radius-4) var(--radius-4) 0 0;
+  box-shadow: var(--elevation-sheet);
+  padding: var(--space-3) var(--space-5) var(--space-6);
+  max-height: 88vh;
+  overflow-y: auto;
+  animation: rise var(--duration-sheet) var(--ease-settle);
+}
+
+/* On larger screens the sheet settles as a centered panel (§17 consistency,
+   responsive per Level 2 §18). */
+@media (min-width: 700px) {
+  .backdrop {
+    align-items: center;
+  }
+  .panel {
+    border-radius: var(--radius-4);
+    max-height: 80vh;
+  }
+}
+
+.grip {
+  width: 36px;
+  height: 4px;
+  border-radius: var(--radius-round);
+  background: var(--line-2);
+  margin: 0 auto var(--space-4);
+}
+
+.title {
+  font-size: var(--text-heading);
+  font-weight: var(--weight-bold);
+  color: var(--ink);
+  margin-bottom: var(--space-4);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.footer {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.footer > * {
+  flex: 1;
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop,
+  .panel {
+    animation: none;
+  }
+}

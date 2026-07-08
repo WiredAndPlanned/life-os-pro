@@ -1,0 +1,48 @@
+/* The Cairn mark + wordmark lockup. One ink (currentColor), never gradient. */
+
+.cairn {
+  display: block;
+  flex: none;
+}
+
+.lockup {
+  display: inline-flex;
+  align-items: center;
+  /* Clear space is half the mark's height; the gap approximates it beside the word. */
+  gap: var(--space-3);
+  color: var(--ink);
+}
+
+.wordmark {
+  font-family: var(--font-family);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-heading);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* Motion signature: stones settle bottom-up (base → crown), 450ms, ONCE.
+   Each stone is delayed by its order (base=1 first). Never loops. */
+.settle .stone {
+  animation: settle 450ms var(--ease-settle) both;
+  animation-delay: calc((var(--stone-order) - 1) * 90ms);
+}
+
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reduced-motion parity: the stones are simply already settled. */
+@media (prefers-reduced-motion: reduce) {
+  .settle .stone {
+    animation: none;
+  }
+}

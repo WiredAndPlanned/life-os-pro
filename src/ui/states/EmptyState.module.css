@@ -1,0 +1,26 @@
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-3);
+  padding: var(--space-7) var(--space-5);
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: var(--text-heading);
+  font-weight: var(--weight-semibold);
+  color: var(--ink);
+}
+
+.body {
+  font-size: var(--text-callout);
+  color: var(--ink-3);
+  line-height: var(--leading-normal);
+}
+
+.action {
+  margin-top: var(--space-2);
+}

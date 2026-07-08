@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Life OS Pro — Token Preview (Phase 1 verification)</title>
+    <style>
+      /* Inlined copies of the real token values for standalone verification.
+         Kept in sync with src/tokens/color.css + scale.css. */
+      .theme-light {
+        --signal: #6c5ce0; --signal-hover: #5b4bd0; --signal-pressed: #4e3fc0;
+        --signal-on-tint: #eeebfc; --signal-ink: #ffffff;
+        --bg: #f6f5fb; --surface: #ffffff; --surface-2: #efedf7;
+        --line: rgba(28,22,52,0.08); --line-2: rgba(28,22,52,0.14);
+        --ink: #1b1633; --ink-2: #4a4568; --ink-3: #6b6685; --ink-4: #c3bfd6;
+        --positive: #2e9e6b; --caution: #c9821e; --critical: #c64545;
+        --cat-plan: #7c74c4; --cat-health: #5ba6a0; --cat-money: #5e8fbf; --cat-life: #c48f6a;
+        --elevation-2: 0 2px 8px rgba(28,22,52,0.08), 0 1px 3px rgba(28,22,52,0.05);
+      }
+      .theme-dark {
+        --signal: #6c5ce0; --signal-hover: #5b4bd0; --signal-pressed: #4e3fc0;
+        --signal-on-tint: #241f3d; --signal-ink: #ffffff;
+        --bg: #0f0c1b; --surface: #1a1630; --surface-2: #221d3b;
+        --line: rgba(255,255,255,0.08); --line-2: rgba(255,255,255,0.14);
+        --ink: #f3f1fb; --ink-2: #c6c1e0; --ink-3: #8b85a8; --ink-4: #565073;
+        --positive: #4fc08a; --caution: #e0a04a; --critical: #e06a6a;
+        --cat-plan: #9a92e0; --cat-health: #79c2bc; --cat-money: #7fabd6; --cat-life: #d9a984;
+        --elevation-2: 0 2px 10px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.35);
+      }
+      * { box-sizing: border-box; margin: 0; }
+      body { font-family: -apple-system, "Segoe UI", system-ui, sans-serif; }
+      .pane { padding: 32px; background: var(--bg); color: var(--ink); }
+      .row { display: flex; gap: 32px; }
+      .col { flex: 1; }
+      h2 { font-size: 24px; margin-bottom: 4px; }
+      h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em;
+           color: var(--ink-3); margin: 24px 0 10px; font-weight: 700; }
+      .swatches { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+      .sw { border-radius: 12px; border: 1px solid var(--line); overflow: hidden;
+            background: var(--surface); }
+      .chip { height: 44px; }
+      .sw .meta { padding: 8px 10px; font-size: 12px; }
+      .sw .name { color: var(--ink); font-weight: 600; }
+      .sw .val { color: var(--ink-3); font-variant-numeric: tabular-nums; }
+      .card { background: var(--surface); border: 1px solid var(--line);
+              border-radius: 16px; padding: 20px; box-shadow: var(--elevation-2);
+              margin-top: 12px; }
+      .btn { background: var(--signal); color: var(--signal-ink); border: none;
+             border-radius: 12px; padding: 12px 18px; font-weight: 600; font-size: 15px; }
+      .type-row { display: flex; align-items: baseline; gap: 12px; margin: 6px 0;
+                  border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+      .type-row .lbl { width: 90px; font-size: 12px; color: var(--ink-3); }
+      .ink1 { color: var(--ink); } .ink2 { color: var(--ink-2); }
+      .ink3 { color: var(--ink-3); } .ink4 { color: var(--ink-4); }
+      .cat-dot { display: inline-block; width: 10px; height: 10px; border-radius: 999px;
+                 margin-right: 8px; vertical-align: middle; }
+      .cat-line { display: flex; align-items: center; padding: 10px 12px;
+                  background: var(--surface); border: 1px solid var(--line);
+                  border-left: 2px solid; border-radius: 12px; margin: 6px 0;
+                  color: var(--ink); font-size: 15px; }
+      .contrast { font-size: 12px; margin: 4px 0; color: var(--ink-2);
+                  font-variant-numeric: tabular-nums; }
+      .num { font-variant-numeric: tabular-nums; font-size: 28px; font-weight: 700;
+             color: var(--ink); }
+      .pass { color: var(--positive); font-weight: 700; }
+      .warn { color: var(--critical); font-weight: 700; }
+    </style>
+  </head>
+  <body>
+    <div class="row">
+      <div class="col theme-light" id="light">
+        <div class="pane"><h2>Light</h2><div class="ink3" style="font-size:13px">Same product, one luminance</div><div id="content-light"></div></div>
+      </div>
+      <div class="col theme-dark" id="dark">
+        <div class="pane"><h2>Dark</h2><div class="ink3" style="font-size:13px">Same product, one luminance</div><div id="content-dark"></div></div>
+      </div>
+    </div>
+
+    <script>
+      // ---- WCAG contrast helper, to verify the accessibility floor (§24) ----
+      function lum(hex) {
+        const c = hex.replace('#', '');
+        const r = parseInt(c.substr(0, 2), 16) / 255;
+        const g = parseInt(c.substr(2, 2), 16) / 255;
+        const b = parseInt(c.substr(4, 2), 16) / 255;
+        const f = (v) => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
+        return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
+      }
+      function ratio(a, b) {
+        const l1 = lum(a), l2 = lum(b);
+        return ((Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05));
+      }
+      function badge(r, big) {
+        const need = big ? 3 : 4.5;
+        const ok = r >= need;
+        return `<span class="${ok ? 'pass' : 'warn'}">${r.toFixed(2)}:1 ${ok ? 'PASS' : 'LOW'}</span>`;
+      }
+
+      const themes = {
+        light: { bg: '#f6f5fb', surface: '#ffffff', ink: '#1b1633', ink2: '#4a4568', ink3: '#6b6685', ink4: '#c3bfd6', signal: '#6c5ce0', signalInk: '#ffffff', positive: '#2e9e6b', caution: '#c9821e', critical: '#c64545' },
+        dark: { bg: '#0f0c1b', surface: '#1a1630', ink: '#f3f1fb', ink2: '#c6c1e0', ink3: '#8b85a8', ink4: '#565073', signal: '#6c5ce0', signalInk: '#ffffff', positive: '#4fc08a', caution: '#e0a04a', critical: '#e06a6a' },
+      };
+
+      function swatch(name, varName) {
+        return `<div class="sw"><div class="chip" style="background:var(${varName})"></div><div class="meta"><div class="name">${name}</div><div class="val">${varName}</div></div></div>`;
+      }
+
+      function render(mode) {
+        const t = themes[mode];
+        return `
+          <h3>Signal — the single accent (§6.1)</h3>
+          <div class="swatches">
+            ${swatch('Signal', '--signal')}
+            ${swatch('Hover', '--signal-hover')}
+            ${swatch('Pressed', '--signal-pressed')}
+            ${swatch('On-tint', '--signal-on-tint')}
+          </div>
+
+          <h3>Neutral ink & surface (§6.2)</h3>
+          <div class="swatches">
+            ${swatch('bg', '--bg')}
+            ${swatch('surface', '--surface')}
+            ${swatch('surface-2', '--surface-2')}
+            ${swatch('ink', '--ink')}
+            ${swatch('ink-2', '--ink-2')}
+            ${swatch('ink-3', '--ink-3')}
+            ${swatch('ink-4', '--ink-4')}
+          </div>
+
+          <h3>Semantic — genuine states only (§6.3)</h3>
+          <div class="swatches">
+            ${swatch('positive', '--positive')}
+            ${swatch('caution', '--caution')}
+            ${swatch('critical', '--critical')}
+          </div>
+
+          <h3>Type scale (§7) — weight carries hierarchy</h3>
+          <div class="card">
+            <div class="type-row"><span class="lbl">display 32</span><span style="font-size:32px;font-weight:700" class="ink1">Calm</span></div>
+            <div class="type-row"><span class="lbl">title 24</span><span style="font-size:24px;font-weight:700" class="ink1">Today</span></div>
+            <div class="type-row"><span class="lbl">heading 18</span><span style="font-size:18px;font-weight:600" class="ink1">This week</span></div>
+            <div class="type-row"><span class="lbl">body 16</span><span style="font-size:16px" class="ink1">Everything you're responsible for is already here.</span></div>
+            <div class="type-row"><span class="lbl">footnote 13</span><span style="font-size:13px" class="ink3">Due tomorrow</span></div>
+          </div>
+
+          <h3>Card, button, calm number</h3>
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div class="ink3" style="font-size:13px">Left this month</div>
+                <div class="num">$248.50</div>
+              </div>
+              <button class="btn">Add expense</button>
+            </div>
+          </div>
+
+          <h3>Category hues — quiet dot / 2px edge only (§6.5)</h3>
+          <div class="cat-line" style="border-left-color:var(--cat-plan)"><span class="cat-dot" style="background:var(--cat-plan)"></span>Plan</div>
+          <div class="cat-line" style="border-left-color:var(--cat-health)"><span class="cat-dot" style="background:var(--cat-health)"></span>Health</div>
+          <div class="cat-line" style="border-left-color:var(--cat-money)"><span class="cat-dot" style="background:var(--cat-money)"></span>Money</div>
+          <div class="cat-line" style="border-left-color:var(--cat-life)"><span class="cat-dot" style="background:var(--cat-life)"></span>Life</div>
+
+          <h3>Contrast floor check (§24) — text on its ground</h3>
+          <div class="contrast">ink on bg &nbsp; ${badge(ratio(t.ink, t.bg), false)}</div>
+          <div class="contrast">ink on surface &nbsp; ${badge(ratio(t.ink, t.surface), false)}</div>
+          <div class="contrast">ink-2 on surface &nbsp; ${badge(ratio(t.ink2, t.surface), false)}</div>
+          <div class="contrast">ink-3 (meta) on surface &nbsp; ${badge(ratio(t.ink3, t.surface), false)}</div>
+          <div class="contrast">signal-ink on signal (button) &nbsp; ${badge(ratio(t.signalInk, t.signal), false)}</div>
+          <div class="contrast">signal on bg (large/active) &nbsp; ${badge(ratio(t.signal, t.bg), true)}</div>
+          <div class="contrast">critical on surface (large) &nbsp; ${badge(ratio(t.critical, t.surface), true)}</div>
+          <div class="contrast">positive on surface (large) &nbsp; ${badge(ratio(t.positive, t.surface), true)}</div>
+        `;
+      }
+
+      document.getElementById('content-light').innerHTML = render('light');
+      document.getElementById('content-dark').innerHTML = render('dark');
+    </script>
+  </body>
+</html>

@@ -1,0 +1,67 @@
+/* The shell places content and nav. On phones the nav is a bottom bar (content
+   above, nav below). On medium+ screens the nav moves to the side (§11, Level 2
+   §9). PrimaryNav handles its own internal presentation per size class. */
+
+.shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.main {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.content {
+  max-width: var(--reading-max);
+  margin: 0 auto;
+  padding: var(--space-5) var(--space-4);
+  padding-bottom: var(--space-8);
+}
+
+.nav {
+  position: sticky;
+  bottom: 0;
+}
+
+/* Medium+ : nav to the side, content beside it. */
+@media (min-width: 700px) {
+  .shell {
+    flex-direction: row-reverse; /* content first in source; nav visually left */
+  }
+  .main {
+    flex: 1;
+  }
+  .nav {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100dvh;
+  }
+  .content {
+    max-width: 760px;
+    padding-top: var(--space-7);
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
+  }
+}
+
+/* Large: the content area grows to use the desktop canvas — the calm comes from
+   generous cards and whitespace, not from a narrow column stranded in a wide
+   window (§7 breathing room; matches the collection's other apps). */
+@media (min-width: 1100px) {
+  .content {
+    max-width: 1080px;
+    padding-left: var(--space-8);
+    padding-right: var(--space-8);
+  }
+}
+
+/* Very large: cap so lines never sprawl, but keep the wide, roomy feel. */
+@media (min-width: 1500px) {
+  .content {
+    max-width: 1240px;
+  }
+}

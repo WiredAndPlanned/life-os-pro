@@ -1,0 +1,26 @@
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-3);
+  padding: var(--space-5);
+  box-shadow: var(--elevation-1);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.heading {
+  font-size: var(--text-heading);
+  font-weight: var(--weight-semibold);
+  color: var(--ink);
+}
+
+.action {
+  font-size: var(--text-footnote);
+  color: var(--ink-3);
+}

@@ -1,0 +1,76 @@
+/* Button — all styling from tokens (§26: consume, never fork). */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--touch-min); /* touch-target floor (§24) */
+  padding: 0 var(--space-5);
+  border: 1px solid transparent;
+  border-radius: var(--radius-2);
+  font-size: var(--text-callout);
+  font-weight: var(--weight-semibold);
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color var(--duration-instant) var(--ease-standard),
+    border-color var(--duration-instant) var(--ease-standard),
+    transform var(--duration-instant) var(--ease-standard);
+}
+
+.btn:active {
+  transform: scale(0.98); /* single, calm press acknowledgment (§21) */
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 1; /* express disabled via token color, not just opacity, for clarity */
+  color: var(--ink-4);
+  background: var(--surface-2);
+  border-color: transparent;
+  transform: none;
+}
+
+.block {
+  width: 100%;
+}
+
+/* --- primary: the single accent, the one important action (§6.1) --- */
+.primary {
+  background: var(--signal);
+  color: var(--signal-ink);
+}
+.primary:hover:not(:disabled) {
+  background: var(--signal-hover);
+}
+.primary:active:not(:disabled) {
+  background: var(--signal-pressed);
+}
+
+/* --- ghost: the calm secondary / cancel --- */
+.ghost {
+  background: transparent;
+  color: var(--ink-2);
+  border-color: var(--line-2);
+}
+.ghost:hover:not(:disabled) {
+  background: var(--surface-2);
+}
+.ghost:active:not(:disabled) {
+  background: var(--surface-2);
+}
+
+/* --- danger: a destructive confirm only, inside a confirm dialog (§17) --- */
+.danger {
+  background: transparent;
+  color: var(--critical);
+  border-color: var(--critical);
+}
+.danger:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--critical) 10%, transparent);
+}
+.danger:active:not(:disabled) {
+  background: color-mix(in srgb, var(--critical) 16%, transparent);
+}

@@ -1,0 +1,105 @@
+/* =========================================================================
+   BASE LAYER — reset, base element styling, global a11y defaults
+
+   Depends on color.css + scale.css. This is the considered base that the
+   component library (Phase 2) builds on. It sets calm, premium defaults from
+   spacing/type/color tokens and establishes the two floors that apply to every
+   element from here on: a visible focus ring (§24) and honored reduced motion
+   (§21, §24, Level 2 §12).
+   ========================================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+html,
+body,
+#root {
+  min-height: 100vh;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-family);
+  font-size: var(--text-body);
+  line-height: var(--leading-normal);
+  font-weight: var(--weight-regular);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Headings inherit; hierarchy comes from tokens applied by components, not from
+   browser defaults. Weight, not size alone, carries emphasis (§7). */
+h1,
+h2,
+h3,
+h4 {
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+}
+
+/* Tabular figures wherever numbers align (§7). */
+[data-numeric],
+input[inputmode="decimal"],
+input[inputmode="numeric"] {
+  font-variant-numeric: var(--numeric-figures);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+/* One consistent focus-visible ring on every focusable element (§10, §24).
+   Drawn in the single accent; keyboard users always see where they are. */
+:focus-visible {
+  outline: var(--focus-ring-width) solid var(--signal);
+  outline-offset: 2px;
+  border-radius: var(--radius-1);
+}
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Reduced motion is honored everywhere, from the system preference (§21, §24).
+   An in-product control (Settings) maps to the same [data-reduce-motion] hook. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+:root[data-reduce-motion="true"] *,
+:root[data-reduce-motion="true"] *::before,
+:root[data-reduce-motion="true"] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Respect the platform: no tap-highlight flash; controls feel native and calm. */
+button,
+a,
+[role="button"] {
+  -webkit-tap-highlight-color: transparent;
+}

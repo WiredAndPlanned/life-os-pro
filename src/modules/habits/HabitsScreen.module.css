@@ -1,0 +1,51 @@
+.habitRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--touch-min);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--line);
+}
+.habitRow:last-child {
+  border-bottom: none;
+}
+
+/* The daily check — a calm circle that fills with the accent when marked.
+   Meaning also carried by aria-pressed + the check icon, not color alone (§24). */
+.check {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-round);
+  border: 2px solid var(--line-2);
+  background: transparent;
+  color: var(--signal-ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-quick) var(--ease-standard),
+    border-color var(--duration-quick) var(--ease-standard);
+}
+.checked {
+  background: var(--signal);
+  border-color: var(--signal);
+}
+
+.habitText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+.habitName {
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+  color: var(--ink);
+}
+.habitMeta {
+  font-size: var(--text-footnote);
+  color: var(--ink-3);
+}

@@ -1,0 +1,100 @@
+/* =========================================================================
+   COLOR TOKENS — Life OS Pro certified palette (Constitution §6)
+
+   This is the product's certified expression of the collection color SYSTEM
+   (Level 2 §6). The system's laws live at Level 2; the concrete values live
+   here, because Level 2 explicitly delegates exact values to the product's
+   token source of truth. Values are transcribed verbatim from §6.1–6.5.
+
+   Rules encoded by structure, not just convention:
+   - ONE accent ("Signal"), one meaning: action / active / progress / focus.
+   - Ninety-plus percent of every screen is neutral ink + surface.
+   - Semantic colors exist only for genuine states, never as a scoreboard.
+   - Category hues are quiet: a dot or an edge, never a fill or a page theme.
+   - Between light and dark, ONLY luminance changes (§6.2, §18).
+   ========================================================================= */
+
+:root[data-theme="light"] {
+  /* Signal — the single accent (§6.1) */
+  --signal: #6c5ce0;
+  --signal-hover: #5b4bd0;
+  --signal-pressed: #4e3fc0;
+  --signal-on-tint: #eeebfc; /* the only accepted accent surface, used sparingly */
+  --signal-ink: #ffffff; /* ink placed ON the signal accent (buttons) */
+
+  /* Neutral ink & surface — the product lives here (§6.2) */
+  --bg: #f6f5fb;
+  --surface: #ffffff;
+  --surface-2: #efedf7;
+  --line: rgba(28, 22, 52, 0.08);
+  --line-2: rgba(28, 22, 52, 0.14);
+  --ink: #1b1633;
+  --ink-2: #4a4568;
+  /* §6.2 lists #8A85A3, but that yields 3.52:1 on --surface — below the 4.5:1
+     floor for normal-size meta text (§24), which mandates contrast in EVERY
+     theme with no exception. The two locked provisions conflict; per the build
+     methodology this is a defect resolved in the constitution's favor on the
+     stricter rule (§24). #6B6685 keeps the same cool violet-gray character and
+     clears 4.5:1 on --surface (5.43), --bg (5.01), and --surface-2 (4.69).
+     Flagged to the product owner for ratification back into §6.2. */
+  --ink-3: #6b6685;
+  --ink-4: #c3bfd6;
+
+  /* Semantic — calm by construction (§6.3). For genuine states only. */
+  --positive: #2e9e6b;
+  --caution: #c9821e;
+  --critical: #c64545;
+
+  /* Category hues — quiet by law (§6.5). Only as a <=10px dot / 2px edge. */
+  --cat-plan: #7c74c4;
+  --cat-health: #5ba6a0;
+  --cat-money: #5e8fbf;
+  --cat-life: #c48f6a;
+  /* Soft same-hue tints — the ground for category icon tiles. A quiet wash of the
+     category color, never a saturated fill: recognition via colored icon + label
+     while the surface stays calm. */
+  --cat-plan-tint: #ecebf8;
+  --cat-health-tint: #e4f2f0;
+  --cat-money-tint: #e6eff7;
+  --cat-life-tint: #f6ece3;
+
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  /* Signal — identical hue; the accent does not change between themes (§6.1). */
+  --signal: #6c5ce0;
+  --signal-hover: #5b4bd0;
+  --signal-pressed: #4e3fc0;
+  --signal-on-tint: #241f3d; /* dark on-tint (§6.1) */
+  --signal-ink: #ffffff;
+
+  /* Neutral ink & surface — same roles, different luminance only (§6.2) */
+  --bg: #0f0c1b;
+  --surface: #1a1630;
+  --surface-2: #221d3b;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-2: rgba(255, 255, 255, 0.14);
+  --ink: #f3f1fb;
+  --ink-2: #c6c1e0;
+  --ink-3: #8b85a8;
+  --ink-4: #565073;
+
+  /* Semantic — dark-luminance variants (§6.3) */
+  --positive: #4fc08a;
+  --caution: #e0a04a;
+  --critical: #e06a6a;
+
+  /* Category hues — dark shift luminance only (§6.5). Values tuned for parity. */
+  --cat-plan: #9a92e0;
+  --cat-health: #79c2bc;
+  --cat-money: #7fabd6;
+  --cat-life: #d9a984;
+  /* Dark-theme tints: a low-luminance wash of each hue so tiles read on dark. */
+  --cat-plan-tint: #262340;
+  --cat-health-tint: #1c322f;
+  --cat-money-tint: #1e2c3a;
+  --cat-life-tint: #322820;
+
+  color-scheme: dark;
+}
