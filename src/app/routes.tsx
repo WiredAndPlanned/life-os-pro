@@ -1,21 +1,12 @@
 /**
  * Routing (Constitution §11, §20).
- *
- * Routes are generated around the single destination registry. Plan and Life are
- * hubs (§11) grouping their families; every module is a sub-route to its real
- * screen. Real URL routing gives working browser back/forward (corrects §20).
- * "today" is the index route — the default destination (§11, §13).
- *
- * Today, Search, and Settings are still placeholders here; they are the
- * cross-cutting surfaces assembled in Phase 6 from the modules now built.
  */
 
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createHashRouter } from "react-router-dom";
 import { AppShell } from "./AppShell";
 import { PlaceholderScreen } from "./PlaceholderScreen";
 import { ModuleHub } from "./ModuleHub";
 import type { HubEntry } from "./ModuleHub";
-import { DEFAULT_DESTINATION } from "./destinations";
 import { TodayScreen } from "./TodayScreen";
 import { SearchScreen } from "./SearchScreen";
 import { SettingsScreen } from "./SettingsScreen";
@@ -85,16 +76,12 @@ const lifeGroups: { heading: string; entries: HubEntry[] }[] = [
   },
 ];
 
-export const router = createBrowserRouter([
+export const router = createHashRouter([
   {
-    path: "/",
     element: <AppShell />,
     children: [
-     { index: true, element: <Navigate to={DEFAULT_DESTINATION.path} replace /> },
-
+      { index: true, element: <TodayScreen /> },
       { path: "today", element: <TodayScreen /> },
-
-      // Plan hub + modules
       { path: "plan", element: <ModuleHub title="Plan" subtitle="Time and intentions, in one calm place." groups={planGroups} /> },
       { path: "plan/brain-dump", element: <BrainDumpScreen /> },
       { path: "plan/weekly", element: <WeeklyScreen /> },
@@ -102,8 +89,6 @@ export const router = createBrowserRouter([
       { path: "plan/recurring", element: <RecurringScreen /> },
       { path: "plan/goals", element: <GoalsScreen /> },
       { path: "plan/study", element: <StudyScreen /> },
-
-      // Life hub + modules
       { path: "life", element: <ModuleHub title="Life" subtitle="The areas of living, held together." groups={lifeGroups} /> },
       { path: "life/spending", element: <SpendingScreen /> },
       { path: "life/subscriptions", element: <SubscriptionsScreen /> },
@@ -118,7 +103,6 @@ export const router = createBrowserRouter([
       { path: "life/grocery", element: <GroceryScreen /> },
       { path: "life/content", element: <ContentScreen /> },
       { path: "life/career", element: <CareerScreen /> },
-
       { path: "search", element: <SearchScreen /> },
       { path: "settings", element: <SettingsScreen /> },
       {
