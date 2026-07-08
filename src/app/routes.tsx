@@ -90,7 +90,7 @@ export const router = createBrowserRouter([
     path: "/",
     element: <AppShell />,
     children: [
-      { index: true, element: <Navigate to={`/${DEFAULT_DESTINATION.path}`} replace /> },
+     { index: true, element: <Navigate to={DEFAULT_DESTINATION.path} replace /> },
 
       { path: "today", element: <TodayScreen /> },
 
